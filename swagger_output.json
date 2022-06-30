@@ -76,14 +76,7 @@
         ],
         "description": "",
         "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
+        "responses": {}
       }
     },
     "/": {
@@ -198,14 +191,7 @@
         ],
         "description": "",
         "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
+        "responses": {}
       }
     },
     "/retrievebyid": {
@@ -215,14 +201,7 @@
         ],
         "description": "",
         "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
+        "responses": {}
       }
     },
     "/retrievebyuser": {
@@ -232,14 +211,7 @@
         ],
         "description": "",
         "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
+        "responses": {}
       }
     },
     "/update": {
@@ -248,46 +220,8 @@
           "Posts"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "example": "any"
-                },
-                "caption": {
-                  "example": "any"
-                },
-                "createdBy": {
-                  "example": "any"
-                },
-                "dowloadUrl": {
-                  "example": "any"
-                },
-                "createdAt": {
-                  "example": "any"
-                },
-                "file": {
-                  "example": "any"
-                },
-                "likesCount": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
+        "parameters": [],
+        "responses": {}
       }
     },
     "/delete": {
@@ -296,28 +230,8 @@
           "Posts"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
+        "parameters": [],
+        "responses": {}
       }
     },
     "/create": {
@@ -326,40 +240,8 @@
           "Posts"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "caption": {
-                  "example": "any"
-                },
-                "createdBy": {
-                  "example": "any"
-                },
-                "dowloadUrl": {
-                  "example": "any"
-                },
-                "file": {
-                  "example": "any"
-                },
-                "likesCount": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
+        "parameters": [],
+        "responses": {}
       }
     },
     "/like": {
@@ -368,28 +250,8 @@
           "Posts"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
+        "parameters": [],
+        "responses": {}
       }
     },
     "/dislike": {
@@ -398,28 +260,8 @@
           "Posts"
         ],
         "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
+        "parameters": [],
+        "responses": {}
       }
     },
     "/chatById": {

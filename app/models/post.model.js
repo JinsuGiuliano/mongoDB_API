@@ -11,7 +11,7 @@ const PostSchema = new mongoose.Schema(
       required: [true, "A Post must be created by someone"],
     },
     createdAt: {
-      type: Number,
+      type: Date,
       default: Date.now(),
     },
     file: {
@@ -30,6 +30,10 @@ const PostSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+PostSchema.virtual("timeSincePosted").get(function () {
+  return Date.now() - this.createdAt;
+});
 
 PostSchema.pre("save", function () {
   console.log("pre-save: ", this);

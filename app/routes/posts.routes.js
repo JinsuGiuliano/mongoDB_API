@@ -14,7 +14,6 @@ router.use(function (req, res, next) {
 
 router.get(
   "/all",
-  hasAuth,
   /**  #swagger.tags = ['Posts']*/
   controller.PostsAll
 );

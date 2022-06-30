@@ -24,242 +24,171 @@ const fillUpPosts = async function (allPosts) {
   return posts;
 };
 
-exports.PostCreate = async (req, res) => {
-  try {
-    const data = req.body;
-    const post = await new Post({
-      caption: data.caption,
-      createdBy: data.createdBy,
-      downloadUrl: data.dowloadUrl,
-      file: data.file,
-      likesCount: data.likesCount,
-    });
+exports.PostCreate = catchAsync(async (req, res) => {
+  const data = req.body;
+  const post = await new Post({
+    caption: data.caption,
+    createdBy: data.createdBy,
+    downloadUrl: data.dowloadUrl,
+    file: data.file,
+    likesCount: data.likesCount,
+  });
 
-    post.save();
+  post.save();
 
-    res.status(200).json({
-      status: "success",
-      data: req.body,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "error",
-      message: err.message,
-    });
+  res.status(200).json({
+    status: "success",
+    data: req.body,
+  });
+});
+
+exports.PostsAll = catchAsync(async (req, res) => {
+  const allPosts = await Post.find().limit(20).sort({ createdAt: -1 });
+  //    .cache({ key: req.user.google.id});
+
+  const posts = await fillUpPosts(allPosts);
+  res.status(200).json({
+    status: "success",
+    result: posts.length,
+    data: posts,
+  });
+});
+
+exports.PostsByUserId = catchAsync(async (req, res) => {
+  const allPosts = await Post.find({ createdBy: req.body.userId }).cache({
+    key: req.user.google.id,
+  });
+
+  if (!allPosts) {
+    return next(new AppError("No post found with that ID", 404));
   }
-};
+  const posts = await fillUpPosts(allPosts);
+  res.status(200).json({
+    status: "success",
+    result: posts.length,
+    data: posts,
+  });
+});
 
-exports.PostsAll = async (req, res) => {
-  try {
-    const allPosts = await Post.find().limit(20).sort({ createdAt: -1 });
-    //    .cache({ key: req.user.google.id});
+exports.PostById = catchAsync(async (req, res) => {
+  const post = await Post.findById(req.body.id);
 
-    const posts = await fillUpPosts(allPosts);
-    res.status(200).json({
-      status: "success",
-      result: posts.length,
-      data: posts,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "error",
-      message: err.message,
-    });
+  if (!post) {
+    return next(new AppError("No post found with that ID", 404));
   }
-};
+  res.status(200).json({
+    status: "success",
+    result: 1,
+    data: post,
+  });
+});
 
-exports.PostsByUserId = async (req, res) => {
-  try {
-    const allPosts = await Post.find({ createdBy: req.body.userId });
-    // .cache({ key: req.user.google.id});
-
-    if (!allPosts) {
-      return next(new AppError("No post found with that ID", 404));
-    }
-    const posts = await fillUpPosts(allPosts);
-    res.status(200).json({
-      status: "success",
-      result: posts.length,
-      data: posts,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "error",
-      message: err.message,
-    });
-  }
-};
-
-exports.PostById = async (req, res) => {
-  try {
-    const post = await Post.findOne(
-      { _id: req.body.id },
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
-
-    if (!post) {
-      return next(new AppError("No post found with that ID", 404));
-    }
-    res.status(200).json({
-      status: "success",
-      result: 1,
-      data: post,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "error",
-      message: err.message,
-    });
-  }
-};
-
-exports.PostUpdateById = async (req, res) => {
-  try {
-    const postUdated = await Post.findByIdAndUpdate(
-      req.body.id,
-      {
-        caption: req.body.caption,
-        createdBy: req.body.createdBy,
-        downloadUrl: req.body.dowloadUrl,
-        createdAt: req.body.createdAt,
-        file: req.body.file,
-        likesCount: req.body.likesCount,
-      },
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
-
-    if (!postUdated) {
-      return next(new AppError("No post found with that ID", 404));
-    }
-    res.status(200).json({
-      status: "success",
-      result: 1,
-      data: postUdated,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "error",
-      message: err.message,
-    });
-  }
-};
-
-exports.PostDelete = async (req, res) => {
-  try {
-    const post = await Post.findByIdAndDelete(req.body.id, {
+exports.PostUpdateById = catchAsync(async (req, res) => {
+  const postUdated = await Post.findByIdAndUpdate(
+    req.body.id,
+    {
+      caption: req.body.caption,
+      createdBy: req.body.createdBy,
+      downloadUrl: req.body.dowloadUrl,
+      createdAt: req.body.createdAt,
+      file: req.body.file,
+      likesCount: req.body.likesCount,
+    },
+    {
       new: true,
       runValidators: true,
-    });
-
-    if (!post) {
-      return next(new AppError("No post found with that ID", 404));
     }
+  );
 
-    res.status(200).json({
-      status: "success",
-      data: "Post with Id " + req.body.id + " has been deleted",
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "error",
-      message: err.message,
-    });
+  if (!postUdated) {
+    return next(new AppError("No post found with that ID", 404));
   }
-};
+  res.status(200).json({
+    status: "success",
+    result: 1,
+    data: postUdated,
+  });
+});
 
-exports.PostLike = async (req, res) => {
-  try {
-    const postUdated = await Post.findByIdAndUpdate(
-      req.body.id,
-      {
-        $inc: {
-          likesCount: 1,
-        },
+exports.PostDelete = catchAsync(async (req, res) => {
+  const post = await Post.findByIdAndDelete(req.body.id);
+
+  if (!post) {
+    return next(new AppError("No post found with that ID", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: "Post with Id " + req.body.id + " has been deleted",
+  });
+});
+
+exports.PostLike = catchAsync(async (req, res) => {
+  const postUdated = await Post.findByIdAndUpdate(
+    req.body.id,
+    {
+      $inc: {
+        likesCount: 1,
       },
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
-
-    if (!postUdated) {
-      return next(new AppError("No post found with that ID", 404));
+    },
+    {
+      new: true,
+      runValidators: true,
     }
+  );
 
-    res.status(200).json({
-      status: "success",
-      result: 1,
-      data: postUdated,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "error",
-      message: err.message,
-    });
+  if (!postUdated) {
+    return next(new AppError("No post found with that ID", 404));
   }
-};
 
-exports.PostDislike = async (req, res) => {
-  try {
-    const postUdated = await Post.findByIdAndUpdate(
-      req.body.id,
-      {
-        $inc: {
-          likesCount: -1,
-        },
+  res.status(200).json({
+    status: "success",
+    result: 1,
+    data: postUdated,
+  });
+});
+
+exports.PostDislike = catchAsync(async (req, res) => {
+  const postUdated = await Post.findByIdAndUpdate(
+    req.body.id,
+    {
+      $inc: {
+        likesCount: -1,
       },
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
-
-    if (!postUdated) {
-      return next(new AppError("No post found with that ID", 404));
+    },
+    {
+      new: true,
+      runValidators: true,
     }
+  );
 
-    res.status(200).json({
-      status: "success",
-      result: 1,
-      data: postUdated,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "error",
-      message: err.message,
-    });
+  if (!postUdated) {
+    return next(new AppError("No post found with that ID", 404));
   }
-};
 
-exports.LatestPost = async (req, res) => {
-  try {
-    const allPosts = await Post.find(
-      { createdAt: { $gt: req.body.lastDate } },
-      {
-        new: true,
-        runValidators: true,
-      }
-    )
-      .limit(20)
-      .sort({ createdAt: -1 });
-    //    .cache({ key: req.user.google.id});
+  res.status(200).json({
+    status: "success",
+    result: 1,
+    data: postUdated,
+  });
+});
 
-    const posts = await fillUpPosts(allPosts);
-    res.status(200).json({
-      status: "success",
-      result: posts.length,
-      data: posts,
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "error",
-      message: err.message,
-    });
-  }
-};
+exports.LatestPost = catchAsync(async (req, res) => {
+  const allPosts = await Post.find(
+    { createdAt: { $gt: req.body.lastDate } },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
+    .limit(20)
+    .sort({ createdAt: -1 });
+  //    .cache({ key: req.user.google.id});
+
+  const posts = await fillUpPosts(allPosts);
+  res.status(200).json({
+    status: "success",
+    result: posts.length,
+    data: posts,
+  });
+});

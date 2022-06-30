@@ -12,7 +12,11 @@ router.use(function (req, res, next) {
   next();
 });
 // [authJwt.verifyToken],
-router.get("/all", controller.allUsers);
+router.get(
+  "/all",
+  /**  #swagger.tags = ['Users']*/
+  controller.allUsers
+);
 
 router.get(
   "/",
