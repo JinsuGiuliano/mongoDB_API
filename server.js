@@ -25,7 +25,6 @@ const AuthRoutes = require("./app/routes/auth.routes");
 const UsersRoutes = require("./app/routes/users.routes");
 const ImagesRoutes = require("./app/routes/images.routes");
 const PostsRoutes = require("./app/routes/posts.routes");
-const TodosRoutes = require("./app/routes/todos.routes");
 const ChatRoutes = require("./app/routes/chat.routes");
 var corsOptions = {
   origin: "http://localhost:3000",
@@ -58,7 +57,6 @@ try {
   app.use("/auth", AuthRoutes);
   app.use("/api/users", UsersRoutes);
   app.use("/api/posts", PostsRoutes);
-  app.use("/api/todos", TodosRoutes);
   app.use("/api/images", ImagesRoutes);
   app.use("/api/chats/", ChatRoutes);
 

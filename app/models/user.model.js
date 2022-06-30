@@ -21,6 +21,7 @@ const UserSchema = new mongoose.Schema({
   chats: [{ type: String }],
   categories: [{ type: String }],
   photoBg: { type: String },
+  createdAt: { type: Date, default: Date.now() },
 });
 
 const User = mongoose.model("User", UserSchema);

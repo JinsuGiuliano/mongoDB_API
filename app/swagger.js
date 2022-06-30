@@ -5,7 +5,6 @@ const endpointsFiles = [
   "./app/routes/auth.routes.js",
   "./app/routes/users.routes.js",
   "./app/routes/images.routes.js",
-  "./app/routes/todos.routes.js",
   "./app/routes/posts.routes.js",
   "./app/routes/chat.routes.js",
 ];
