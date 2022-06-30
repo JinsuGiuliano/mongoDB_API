@@ -1,4 +1,4 @@
-const { authJwt, cleanCache } = require("../middlewares");
+const { authJwt, cleanCache, hasAuth } = require("../middlewares");
 const controller = require("../controllers/posts.controller");
 const express = require("express");
 const router = express.Router();
@@ -11,26 +11,61 @@ router.use(function (req, res, next) {
   next();
 });
 // [cleanCache], middleware for cleanning Cache
-//READ Posts
-router.get("/all", controller.PostsAll);
 
-router.get("/latest", controller.LatestPost);
-//READ Post by ID
-router.get("/id", controller.PostById);
+router.get(
+  "/all",
+  hasAuth,
+  /**  #swagger.tags = ['Posts']*/
+  controller.PostsAll
+);
 
-router.get("/user", controller.PostsByUserId);
-//Update Post by ID
-router.put("/:id", controller.PostUpdateById);
+router.get(
+  "/latest",
+  hasAuth,
+  /**  #swagger.tags = ['Posts']*/
+  controller.LatestPost
+);
 
-//Delete Post by ID
-router.delete("/:id", controller.PostDelete);
+router.get(
+  "/retrievebyid",
+  /**  #swagger.tags = ['Posts']*/
+  controller.PostById
+);
 
-//Create Post
-router.post("/", controller.PostCreate);
+router.get(
+  "/retrievebyuser",
+  /**  #swagger.tags = ['Posts']*/
+  controller.PostsByUserId
+);
 
-//Like Post
-router.post("/like", controller.PostLike);
+router.put(
+  "/update",
+  /**  #swagger.tags = ['Posts']
+   */
+  controller.PostUpdateById
+);
 
-//Dislike Post
-router.post("/dislike", controller.PostDislike);
+router.delete(
+  "/delete",
+  /**  #swagger.tags = ['Posts']*/
+  controller.PostDelete
+);
+
+router.post(
+  "/create",
+  /**  #swagger.tags = ['Posts']*/
+  controller.PostCreate
+);
+
+router.post(
+  "/like",
+  /**  #swagger.tags = ['Posts']*/
+  controller.PostLike
+);
+
+router.post(
+  "/dislike",
+  /**  #swagger.tags = ['Posts']*/
+  controller.PostDislike
+);
 module.exports = router;

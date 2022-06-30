@@ -1,35 +1,57 @@
-const { authJwt } = require("../middlewares");
+const { hasAuth } = require("../middlewares");
 const controller = require("../controllers/todos.controller");
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-  router.use(function(req, res, next) {
-    res.header(
-      "Access-Control-Allow-Headers",
-      "x-access-token, Origin, Content-Type, Accept"
-    );
-    next();
-  });
+router.use(function (req, res, next) {
+  res.header(
+    "Access-Control-Allow-Headers",
+    "x-access-token, Origin, Content-Type, Accept"
+  );
+  next();
+});
 
+router.get(
+  "/:id",
+  /**  #swagger.tags = ['Todos']*/
+  controller.TodosAll
+);
 
-  //READ Todos
-  router.get('/:id', controller.TodosAll);
+router.get(
+  "/:id",
+  hasAuth,
+  /**  #swagger.tags = ['Todos']*/
+  controller.TodoById
+);
 
-  //READ Todo by ID 
-  router.get('/:id',controller.TodoById);
+router.put(
+  "/:id",
+  hasAuth,
+  /**  #swagger.tags = ['Todos']*/
+  controller.TodoUpdateById
+);
 
-    //Update Todo by ID
-  router.put('/:id', controller.TodoUpdateById);
-  
-  //READ Todo by Title 
-  router.get('/search/:id', [authJwt.verifyToken], controller.TodoByTitle);
-  
-  //Delete Todo by ID
-  router.delete('/:id', [authJwt.verifyToken],controller.TodoDelete);
+router.get(
+  "/search/:id",
+  hasAuth,
+  /**  #swagger.tags = ['Todos']*/
+  controller.TodoByTitle
+);
 
-   //Create Todo by ID
-  router.post('/:id', [authJwt.verifyToken],controller.TodoCreate);
+router.delete(
+  "/:id",
+  hasAuth,
+  /**  #swagger.tags = ['Todos']*/
+  controller.TodoDelete
+);
+("");
 
+router.post(
+  "/:id",
+  hasAuth,
+  /**  #swagger.tags = ['Todos']*/
+  controller.TodoCreate
+);
 
-  module.exports = router;
+module.exports = router;

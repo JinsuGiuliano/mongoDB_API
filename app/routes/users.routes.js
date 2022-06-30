@@ -14,16 +14,40 @@ router.use(function (req, res, next) {
 // [authJwt.verifyToken],
 router.get("/all", controller.allUsers);
 
-router.get("/", controller.userById);
+router.get(
+  "/",
+  /**  #swagger.tags = ['Users']*/
+  controller.userById
+);
 
-router.get("/profile", controller.userProfile);
+router.get(
+  "/profile",
+  /**  #swagger.tags = ['Users']*/
+  controller.userProfile
+);
 
-router.put("/:id", controller.userUpdate);
+router.put(
+  "/:id",
+  /**  #swagger.tags = ['Users']*/
+  controller.userUpdate
+);
 
-router.post("/follow", controller.followUser);
+router.post(
+  "/follow",
+  /**  #swagger.tags = ['Users']*/
+  controller.followUser
+);
 
-router.post("/unfollow", controller.unFollowUser);
+router.post(
+  "/unfollow",
+  /**  #swagger.tags = ['Users']*/
+  controller.unFollowUser
+);
 
-router.delete("/", controller.DeleteAllUsers);
+router.delete(
+  "/",
+  /**  #swagger.tags = ['Users']*/
+  controller.DeleteAllUsers
+);
 
 module.exports = router;
